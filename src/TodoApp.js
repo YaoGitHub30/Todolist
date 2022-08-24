@@ -3,15 +3,10 @@ import { Typography, Paper, AppBar, Toolbar, Grid } from "@mui/material";
 import TodoList from "./TodoList";
 import TodoForm from "./TodoForm";
 import { v4 as uuidv4 } from 'uuid';
+import UseLocalStorage from "./hooks/useLocalStorage";
 
 function TodoApp() {
-const initialTodos=JSON.parse(window.localStorage.getItem('todos')||"[]");
-  const [todos, setTodos] = useState(initialTodos);
-
-  useEffect(()=>{
-    window.localStorage.setItem("todos",JSON.stringify(todos));
-  },[todos]);
-
+  const [todos, setTodos] = UseLocalStorage("todos",[]);
   const addTodo = (newTodoText) => {
     setTodos([...todos, { id:uuidv4(), task: newTodoText, completed: false }]);
   };
@@ -27,6 +22,7 @@ const initialTodos=JSON.parse(window.localStorage.getItem('todos')||"[]");
     const updatedTodos=todos.map(todo=>todo.id===id?{...todo,task:newTodoText}:todo);
     setTodos(updatedTodos);
   }
+  console.log(todos)
   return (
     <Paper
       style={{
